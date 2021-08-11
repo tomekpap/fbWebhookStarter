@@ -1,0 +1,28 @@
+{
+  "name": "fbwebhookstarter",
+  "version": "1.0.0",
+  "description": "Essential starter script to validate and receive Facebook Webhooks. Requires Facebook Developer Account and public https address to host the app. Some tunneling services would work, including ngrok or telebit (recommended because of static URL)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomekpap/fbWebhookStarter.git"
+  },
+  "keywords": [
+    "facebook",
+    "webhook",
+    "express"
+  ],
+  "author": "tomekpap",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomekpap/fbWebhookStarter/issues"
+  },
+  "homepage": "https://github.com/tomekpap/fbWebhookStarter#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.17.1"
+  }
+}
