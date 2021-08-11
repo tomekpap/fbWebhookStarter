@@ -2,24 +2,29 @@
 
 //Import dependencies
 const express = require("express"),
-  crypto = require("crypto");
+  crypto = require("crypto"),
+  path = require("path"),
+  config = require("./services/config");
 
 //Define express app
 const app = express();
+
+//Import your webhook Handler function
+const webhookHandler = require("./app/webhookHandler");
 
 //////////////////////////////////////////
 //* Set up middleware for all requests *
 //////////////////////////////////////////
 // Parse application/x-www-form-urlencoded
 app.use(
-  urlencoded({
+  express.urlencoded({
     extended: true,
   })
 );
 
 // Parse application/json. Verify that callback came from Facebook
 app.use(
-  json({
+  express.json({
     verify: verifyRequestSignature,
   })
 );
@@ -73,5 +78,40 @@ app.get("/webhook", (req, res) => {
 });
 
 //Handle /webhook POST requests - this is where you handle all information sent from Facebook
+app.post("/webhook", (req, res) => {
+  let body = req.body;
 
-//Start the app
+  console.log(`\u{1F7EA} Received webhook:`);
+  console.dir(body, { depth: null });
+
+  res.status(200).send("EVENT_RECEIVED");
+
+  //handleWebhook(body);
+});
+
+// Check if all environment variables are set
+config.checkEnvVariables();
+
+// Listen for requests :)
+const listener = app.listen(config.port, function () {
+  console.log(`The app is listening on port ${listener.address().port}`);
+  if (
+    Object.keys(config.personas).length == 0 &&
+    config.appUrl &&
+    config.verifyToken
+  ) {
+    console.log(
+      "Is this the first time running?\n" +
+        "Make sure to set the both the Messenger profile, persona " +
+        "and webhook by visiting:\n" +
+        config.appUrl +
+        "/profile?mode=all&verify_token=" +
+        config.verifyToken
+    );
+  }
+
+  if (config.pageId) {
+    console.log("Test your app by messaging:");
+    console.log(`https://m.me/${config.pageId}`);
+  }
+});
