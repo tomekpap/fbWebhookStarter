@@ -41,6 +41,10 @@ function verifyRequestSignature(req, res, buf) {
     }
   }
 }
+
+// Serving static files in Express
+app.use(express.static(path.join(path.resolve(), "public")));
+
 //Handle /webhook GET requests
 
 //Handle /webhook POST requests - this is where you handle all information sent from Facebook
